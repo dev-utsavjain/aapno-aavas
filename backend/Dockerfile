@@ -37,6 +37,7 @@ WORKDIR /app
 COPY --from=builder /app/bin/migration ./bin/
 COPY --from=builder /app/bin/imagine_backend ./bin/
 COPY --from=builder /app/start.sh ./
-RUN chmod +x ./start.sh
+# Normalize line endings (Windows checkouts can introduce CRLF, which breaks #!/bin/sh) + exec bit.
+RUN sed -i 's/\r$//' ./start.sh && chmod +x ./start.sh
 EXPOSE 8080
 CMD ["./start.sh"]

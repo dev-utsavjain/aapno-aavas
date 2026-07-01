@@ -1,0 +1,11 @@
+node_modules
+.git
+assets-seed/videos
+assets-seed/photos
+backend/bin
+frontend/dist
+backend/internal/dist/assets
+backend/internal/dist/img
+backend/internal/dist/gallery
+backend/internal/dist/fonts
+**/.env

@@ -1,0 +1,5 @@
+# Keep shell scripts LF so they run in Linux containers regardless of host OS.
+*.sh text eol=lf
+start.sh text eol=lf
+# Normalize text; let git decide the rest.
+* text=auto
