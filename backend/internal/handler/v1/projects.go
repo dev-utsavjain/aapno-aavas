@@ -60,7 +60,7 @@ func ListProjects(c *gin.Context) {
 
 	var projects []models.Project
 	if err := base.
-		Preload("Media", func(d *gorm.DB) *gorm.DB { return d.Order("sort_order asc").Limit(1) }).
+		Preload("Media", func(d *gorm.DB) *gorm.DB { return d.Order("sort_order asc") }).
 		Order("featured DESC, created_at DESC, id DESC").
 		Limit(p.Limit).Offset(p.Offset).
 		Find(&projects).Error; err != nil {
@@ -102,7 +102,7 @@ func AdminListProjects(c *gin.Context) {
 
 	var projects []models.Project
 	if err := base.
-		Preload("Media", func(d *gorm.DB) *gorm.DB { return d.Order("sort_order asc").Limit(1) }).
+		Preload("Media", func(d *gorm.DB) *gorm.DB { return d.Order("sort_order asc") }).
 		Order("created_at DESC, id DESC").
 		Limit(p.Limit).Offset(p.Offset).
 		Find(&projects).Error; err != nil {
