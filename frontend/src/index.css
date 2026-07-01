@@ -1,0 +1,166 @@
+@import "tailwindcss";
+
+/* ============================================================================
+   Aapno Aavas design system — editorial navy-and-ivory, photography-forward.
+   Tokens are the single source of truth; pages compose these, never raw hexes.
+   ============================================================================ */
+
+/* ---- Self-hosted fonts (Fontshare Zodiak + General Sans, Google Hind Jaipur) ---- */
+@font-face {
+  font-family: "Zodiak";
+  src: url("/fonts/Zodiak-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Zodiak";
+  src: url("/fonts/Zodiak-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "General Sans";
+  src: url("/fonts/GeneralSans-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "General Sans";
+  src: url("/fonts/GeneralSans-Medium.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "General Sans";
+  src: url("/fonts/GeneralSans-Semibold.woff2") format("woff2");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+/* Devanagari (आपणों) falls back to a system Devanagari stack — the brand mark itself is the
+   logo image, so no webfont download is required. */
+
+/* ---- Design tokens ---- */
+@theme {
+  /* Color — warm ivory base, navy structure, saffron accent (fills only). */
+  --color-bg: #f6f2ea;
+  --color-surface: #faf7f0;
+  --color-sand: #e7dccb;
+  --color-ink: #241d16;
+  --color-ink-muted: #6e655a;
+  --color-navy: #1f3a5f;
+  --color-navy-deep: #12233f;
+  --color-saffron: #e8912a;
+  --color-saffron-ink: #b4681a;
+  --color-terracotta: #c56a45;
+  --color-gold: #c9a96e;
+
+  /* Type */
+  --font-display: "Zodiak", Georgia, "Times New Roman", serif;
+  --font-body: "General Sans", "Helvetica Neue", Arial, sans-serif;
+  --font-deva: "Noto Sans Devanagari", "Mangal", "General Sans", sans-serif;
+
+  /* Radius — tight/editorial, not app-rounded */
+  --radius-xs: 2px;
+  --radius-sm: 4px;
+  --radius-md: 6px;
+
+  /* Motion easing */
+  --ease-editorial: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Editorial container */
+  --spacing-gutter: 24px;
+}
+
+/* ---- Base ---- */
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  body {
+    background-color: var(--color-bg);
+    color: var(--color-ink);
+    font-family: var(--font-body);
+    font-size: 1.0625rem;
+    line-height: 1.7;
+  }
+  h1, h2, h3 {
+    font-family: var(--font-display);
+    color: var(--color-navy);
+    letter-spacing: -0.01em;
+    line-height: 1.1;
+  }
+  h1 { letter-spacing: -0.02em; line-height: 1.02; }
+  ::selection {
+    background: var(--color-saffron);
+    color: var(--color-navy-deep);
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-saffron);
+    outline-offset: 2px;
+  }
+  /* Respect reduced motion globally. */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+/* ---- Composable utilities (kept small; pages use tokens directly otherwise) ---- */
+@layer components {
+  .container-page {
+    width: 100%;
+    max-width: 1280px;
+    margin-inline: auto;
+    padding-inline: var(--spacing-gutter);
+  }
+  /* Uppercase eyebrow label — used sparingly above section titles. */
+  .eyebrow {
+    font-family: var(--font-body);
+    font-weight: 500;
+    font-size: 0.8125rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-saffron-ink);
+  }
+  .font-deva { font-family: var(--font-deva); }
+  /* Primary CTA — saffron fill, navy text. */
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--color-saffron);
+    color: var(--color-navy-deep);
+    font-family: var(--font-body);
+    font-weight: 600;
+    padding: 0.85rem 1.6rem;
+    border-radius: var(--radius-sm);
+    transition: transform 0.3s var(--ease-editorial), background 0.3s var(--ease-editorial);
+  }
+  .btn-primary:hover { background: #f0a03f; transform: translateY(-1px); }
+  /* Secondary — navy outline. */
+  .btn-outline {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    border: 1px solid var(--color-navy);
+    color: var(--color-navy);
+    font-family: var(--font-body);
+    font-weight: 500;
+    padding: 0.85rem 1.6rem;
+    border-radius: var(--radius-sm);
+    transition: background 0.3s var(--ease-editorial), color 0.3s var(--ease-editorial);
+  }
+  .btn-outline:hover { background: var(--color-navy); color: var(--color-surface); }
+  /* Hairline separators instead of gray shadows. */
+  .hairline { border-color: var(--color-sand); }
+}
