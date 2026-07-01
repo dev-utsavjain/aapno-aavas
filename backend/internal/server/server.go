@@ -14,6 +14,7 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"path"
 	"strings"
 	"syscall"
 	"time"
@@ -81,10 +82,15 @@ func createServer() *http.Server {
 		http.ServeContent(c.Writer, c.Request, file, stat.ModTime(), f)
 	})
 
-	// SPA fallback for client-only routes (e.g. /admin/*). API 404s stay JSON.
+	// Fallback: API 404s stay JSON; otherwise try to serve an embedded static file from the
+	// build root (favicon, /logo.png, /img/*, /gallery/*, /fonts/*), else the SPA shell.
 	r.NoRoute(func(c *gin.Context) {
-		if strings.HasPrefix(c.Request.URL.Path, "/api/") {
+		p := c.Request.URL.Path
+		if strings.HasPrefix(p, "/api/") {
 			c.JSON(http.StatusNotFound, gin.H{"error": "API not found"})
+			return
+		}
+		if serveEmbeddedFile(c, assetsFS, p) {
 			return
 		}
 		web.Shell(c)
@@ -96,6 +102,29 @@ func createServer() *http.Server {
 		Addr:    ":" + config.AppConfig.Port,
 		Handler: r,
 	}
+}
+
+// serveEmbeddedFile serves a static file from the embedded build root (e.g. /logo.png,
+// /img/hero.jpg, /fonts/*.woff2). Returns false when the path isn't a real file, so the
+// caller can fall back to the SPA shell. index.html is never served here (goes through Shell).
+func serveEmbeddedFile(c *gin.Context, fsys http.FileSystem, urlPath string) bool {
+	name := strings.TrimPrefix(path.Clean(urlPath), "/")
+	if name == "" || name == "index.html" {
+		return false
+	}
+	f, err := fsys.Open(name)
+	if err != nil {
+		return false
+	}
+	defer f.Close()
+	stat, err := f.Stat()
+	if err != nil || stat.IsDir() {
+		return false
+	}
+	// public/ assets (non-hashed) — modest cache. Hashed /assets/* are handled separately.
+	c.Header("Cache-Control", "public, max-age=86400")
+	http.ServeContent(c.Writer, c.Request, name, stat.ModTime(), f)
+	return true
 }
 
 func readEmbeddedIndex() string {
