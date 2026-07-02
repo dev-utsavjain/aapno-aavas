@@ -6,7 +6,6 @@ import { ScrollToTop } from "@/components/ScrollToTop";
 import { Analytics } from "@/components/Analytics";
 import { IntroLoader } from "@/components/cinematic/IntroLoader";
 import { CustomCursor } from "@/components/cinematic/CustomCursor";
-import { PageTransition } from "@/components/cinematic/PageTransition";
 import { useLenis } from "@/hooks/useLenis";
 
 /** Public site shell: header + routed page + footer + consent + smooth scroll + cinematic layer. */
@@ -16,7 +15,6 @@ export function Layout() {
     <>
       <IntroLoader />
       <CustomCursor />
-      <PageTransition />
       <ScrollToTop />
       <Analytics />
       <Header />

@@ -23,7 +23,9 @@ export function CustomCursor() {
     };
     const over = (e: MouseEvent) => {
       const t = e.target as HTMLElement | null;
-      setHover(!!t?.closest("a, button, [data-cursor]"));
+      const next = !!t?.closest("a, button, [data-cursor]");
+      // ponytail: only setState on change — mouseover fires per element crossing
+      setHover((prev) => (prev === next ? prev : next));
     };
     window.addEventListener("mousemove", move);
     window.addEventListener("mouseover", over);
