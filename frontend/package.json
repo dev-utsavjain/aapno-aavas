@@ -9,6 +9,7 @@
     "build:embed": "npm run build && node scripts/embed.mjs",
     "preview": "vite preview",
     "lint:design": "node scripts/design-lint.mjs",
+    "prep:video": "node scripts/prep-hero-video.mjs",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
@@ -34,5 +35,9 @@
     "tailwindcss": "^4.0.0",
     "typescript": "^5.7.3",
     "vite": "^6.1.0"
+  },
+  "optionalDependencies": {
+    "ffmpeg-static": "^5.3.0",
+    "ffprobe-static": "^3.1.0"
   }
 }

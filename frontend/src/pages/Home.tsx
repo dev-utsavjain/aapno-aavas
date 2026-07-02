@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { motion, useReducedMotion } from "motion/react";
+import type { ReactNode } from "react";
 import { ArrowRight, ShieldCheck, Handshake, Buildings, Key } from "@phosphor-icons/react";
 import { api } from "@/lib/api";
 import { SITE } from "@/lib/site";
@@ -9,6 +10,28 @@ import { Reveal } from "@/components/motion/Reveal";
 import { ProjectCard } from "@/components/ProjectCard";
 import { LeadForm } from "@/components/LeadForm";
 import { WhatsAppButton, whatsappDefaultMessage } from "@/components/WhatsAppButton";
+import { GrainOverlay } from "@/components/cinematic/GrainOverlay";
+import { ScrollCue } from "@/components/cinematic/ScrollCue";
+import { MagneticButton } from "@/components/cinematic/MagneticButton";
+import { CountUp } from "@/components/cinematic/CountUp";
+import { VideoShowcase } from "@/components/cinematic/VideoShowcase";
+
+/** Line-mask reveal for hero headline lines. */
+function Line({ children, delay = 0, reduced }: { children: ReactNode; delay?: number; reduced: boolean }) {
+  if (reduced) return <span className="block">{children}</span>;
+  return (
+    <span className="block overflow-hidden">
+      <motion.span
+        className="block"
+        initial={{ y: "110%" }}
+        animate={{ y: 0 }}
+        transition={{ duration: 0.9, delay, ease: [0.16, 1, 0.3, 1] }}
+      >
+        {children}
+      </motion.span>
+    </span>
+  );
+}
 
 export default function Home() {
   const reduced = useReducedMotion();
@@ -20,41 +43,72 @@ export default function Home() {
 
   return (
     <>
-      <Seo title="Premium Residential & Commercial Properties in Jaipur" description="Aapno Aavas — a trusted Jaipur real-estate advisory & channel partner. Explore RERA-registered projects and connect with our advisors." />
+      <Seo title="Premium Residential & Commercial Properties in Jaipur" description="Aapno Aavas — a trusted Jaipur real-estate advisory & channel partner. Explore RERA-registered projects and connect with our advisors." image="/img/hero-poster.jpg" />
 
-      {/* Hero */}
-      <section className="relative min-h-[88vh] flex items-end overflow-hidden">
-        <motion.img
-          src="/img/hero.jpg"
-          alt="Elegant furnished living room interior in Jaipur"
-          className="absolute inset-0 h-full w-full object-cover"
-          initial={reduced ? undefined : { scale: 1.08 }}
-          animate={reduced ? undefined : { scale: 1 }}
-          transition={{ duration: 1.6, ease: [0.16, 1, 0.3, 1] }}
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-navy-deep/85 via-navy-deep/30 to-transparent" />
-        <div className="container-page relative pb-20 pt-32">
-          <motion.div
-            initial={reduced ? undefined : { opacity: 0, y: 30 }}
-            animate={reduced ? undefined : { opacity: 1, y: 0 }}
-            transition={{ duration: 0.9, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-            className="max-w-2xl"
+      {/* Cinematic hero — video right (desktop) / full-bleed (mobile) */}
+      <section className="relative min-h-[92vh] bg-ink text-white overflow-hidden flex items-end md:items-center">
+        <div className="absolute inset-0 md:left-[44%]">
+          <video
+            className="h-full w-full object-cover"
+            autoPlay={!reduced}
+            muted
+            loop
+            playsInline
+            preload="metadata"
+            poster="/img/hero-poster.jpg"
           >
-            <p className="eyebrow text-saffron mb-4">{SITE.tagline}</p>
-            <h1 className="text-surface text-[clamp(2.75rem,6vw,5rem)] font-bold">
-              Find a home that <span className="text-saffron">feels like yours.</span>
+            <source src="/video/hero.mp4" type="video/mp4" />
+          </video>
+          <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/55 to-ink/10 md:bg-gradient-to-r md:from-ink md:via-ink/40 md:to-transparent" />
+          <GrainOverlay />
+        </div>
+
+        <div className="container-page relative z-10 w-full pb-24 pt-40 md:py-28">
+          <div className="max-w-xl">
+            <motion.p
+              className="eyebrow !text-saffron mb-5"
+              initial={reduced ? undefined : { opacity: 0 }}
+              animate={reduced ? undefined : { opacity: 1 }}
+              transition={{ delay: 0.2, duration: 0.6 }}
+            >
+              {SITE.tagline}
+            </motion.p>
+            <h1 className="text-white text-[clamp(2.75rem,6vw,5rem)]">
+              <Line reduced={!!reduced}>Find a home</Line>
+              <Line reduced={!!reduced} delay={0.08}>that feels</Line>
+              <Line reduced={!!reduced} delay={0.16}>
+                <span className="text-saffron">like yours.</span>
+              </Line>
             </h1>
-            <p className="mt-5 text-lg text-surface/85 max-w-xl">
+            <motion.p
+              className="mt-6 text-lg text-white/85 max-w-lg"
+              initial={reduced ? undefined : { opacity: 0, y: 16 }}
+              animate={reduced ? undefined : { opacity: 1, y: 0 }}
+              transition={{ delay: 0.5, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+            >
               Curated residential and commercial projects across Jaipur — advised end to end by a
               team that treats your search as its own. <span className="font-deva">आपणों</span> Aavas.
-            </p>
-            <div className="mt-8 flex flex-wrap gap-4">
-              <Link to="/projects" className="btn-primary">
-                Explore Properties <ArrowRight size={18} weight="bold" />
-              </Link>
-              <WhatsAppButton message={whatsappDefaultMessage()} className="!bg-surface !text-navy-deep hover:!bg-surface/90" />
-            </div>
-          </motion.div>
+            </motion.p>
+            <motion.div
+              className="mt-9 flex flex-wrap gap-4"
+              initial={reduced ? undefined : { opacity: 0, y: 16 }}
+              animate={reduced ? undefined : { opacity: 1, y: 0 }}
+              transition={{ delay: 0.65, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+            >
+              <MagneticButton>
+                <Link to="/projects" className="btn-primary">
+                  Explore Properties <ArrowRight size={18} weight="bold" />
+                </Link>
+              </MagneticButton>
+              <MagneticButton>
+                <WhatsAppButton message={whatsappDefaultMessage()} className="!bg-white !text-ink hover:!bg-white/90" />
+              </MagneticButton>
+            </motion.div>
+          </div>
+        </div>
+
+        <div className="absolute bottom-7 left-1/2 -translate-x-1/2 z-10 hidden md:block">
+          <ScrollCue />
         </div>
       </section>
 
@@ -81,16 +135,19 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Step Inside — cinematic video band */}
+      <VideoShowcase />
+
       {/* Featured projects */}
       {projects.length > 0 && (
-        <section className="container-page pb-24 md:pb-32">
+        <section className="container-page py-24 md:py-32">
           <Reveal>
             <div className="flex items-end justify-between gap-4 mb-12">
               <div>
                 <p className="eyebrow mb-3">Featured</p>
                 <h2 className="text-[clamp(2rem,3.5vw,2.75rem)]">Handpicked projects</h2>
               </div>
-              <Link to="/projects" className="hidden sm:inline-flex items-center gap-1.5 text-navy font-medium hover:text-saffron-ink transition-colors">
+              <Link to="/projects" className="hidden sm:inline-flex items-center gap-1.5 text-ink font-medium hover:text-saffron-ink transition-colors">
                 View all <ArrowRight size={16} weight="bold" />
               </Link>
             </div>
@@ -105,17 +162,19 @@ export default function Home() {
         </section>
       )}
 
-      {/* Trust band */}
-      <section className="bg-navy-deep text-surface">
+      {/* Trust band — animated count-up */}
+      <section className="bg-ink text-white">
         <div className="container-page py-20 grid gap-10 sm:grid-cols-3 text-center">
           {[
-            { n: "500+", l: "Families advised" },
-            { n: "40+", l: "RERA-registered projects" },
-            { n: "12+", l: "Years across Jaipur" },
+            { v: 500, s: "+", l: "Families advised" },
+            { v: 40, s: "+", l: "RERA-registered projects" },
+            { v: 12, s: "+", l: "Years across Jaipur" },
           ].map((s) => (
             <Reveal key={s.l}>
-              <div className="font-display font-bold text-5xl text-saffron">{s.n}</div>
-              <div className="mt-2 text-surface/70 text-sm uppercase tracking-widest">{s.l}</div>
+              <div className="font-display font-bold text-5xl text-saffron">
+                <CountUp value={s.v} suffix={s.s} />
+              </div>
+              <div className="mt-2 text-white/70 text-sm uppercase tracking-widest">{s.l}</div>
             </Reveal>
           ))}
         </div>

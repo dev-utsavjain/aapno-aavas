@@ -13,3 +13,5 @@ frontend/dist/
 *.log
 # large seed videos (kept locally, not in git)
 assets-seed/videos/
+# confidential handover doc (contains secrets) — keep out of git
+docs/HANDOVER.md
