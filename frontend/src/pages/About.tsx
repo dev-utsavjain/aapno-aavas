@@ -100,6 +100,68 @@ export default function About() {
         </div>
       </section>
 
+      {/* Leadership — Founder & CEO */}
+      <section className="bg-navy-deep text-surface">
+        <div className="container-page py-24 md:py-32">
+          <div className="grid gap-14 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20 items-center">
+            <Reveal>
+              <div className="relative">
+                <img
+                  src="/img/founder.jpg"
+                  alt="Ms. Durga Joshi — Founder & CEO, Aapno Aavas"
+                  className="w-full aspect-[4/5] object-cover object-top rounded-sm"
+                />
+                <div className="absolute -bottom-5 -right-5 hidden md:block bg-saffron text-ink rounded-sm px-5 py-4">
+                  <p className="font-display font-bold text-3xl leading-none">5+</p>
+                  <p className="mt-1 text-xs uppercase tracking-widest">Years experience</p>
+                </div>
+              </div>
+            </Reveal>
+
+            <Reveal delay={0.1}>
+              <p className="eyebrow text-saffron mb-3">Leadership</p>
+              <h2 className="text-surface text-[clamp(2rem,3.5vw,2.75rem)]">
+                Ms. Durga Joshi
+              </h2>
+              <p className="mt-2 text-surface/70 uppercase tracking-widest text-sm">Founder &amp; CEO</p>
+
+              <div className="mt-6 space-y-5 text-surface/80 max-w-2xl">
+                <p className="m-0">
+                  Ms. Durga Joshi is the Founder &amp; CEO of Aapno Aavas, bringing over five years of
+                  professional experience and a strong commitment to excellence, innovation and
+                  customer satisfaction. Since entering the real-estate industry in August 2024, she
+                  has demonstrated exceptional leadership, strategic vision and a customer-centric
+                  approach.
+                </p>
+                <p className="m-0">
+                  Under her guidance, the company is dedicated to delivering trusted real-estate
+                  solutions, maintaining transparency and creating long-term value for customers and
+                  investors. Her focus on ethical business practices, market understanding and client
+                  relationships has helped establish a strong foundation for the organisation's growth.
+                </p>
+                <p className="m-0">
+                  She believes real estate is not just about buying and selling properties — it is
+                  about building trust, fulfilling aspirations and creating lasting relationships.
+                </p>
+              </div>
+
+              <dl className="mt-8 grid gap-5 sm:grid-cols-3 border-t border-white/10 pt-8">
+                {[
+                  { v: "5+ Years", l: "Overall experience" },
+                  { v: "Aug 2024", l: "In real estate" },
+                  { v: "Sales & Advisory", l: "Core expertise" },
+                ].map((h) => (
+                  <div key={h.l}>
+                    <dt className="font-display font-bold text-saffron text-xl">{h.v}</dt>
+                    <dd className="mt-1 text-sm text-surface/70">{h.l}</dd>
+                  </div>
+                ))}
+              </dl>
+            </Reveal>
+          </div>
+        </div>
+      </section>
+
       {/* How we work */}
       <section className="bg-sand">
         <div className="container-page py-24 md:py-32">

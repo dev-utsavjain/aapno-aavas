@@ -2,8 +2,8 @@
 export const SITE = {
   name: "Aapno Aavas",
   tagline: "Jaipur's Trusted Property Advisory",
-  whatsappNumber: import.meta.env.VITE_WHATSAPP_NUMBER || "919812345678",
-  phone: import.meta.env.VITE_PHONE || "+91 98123 45678",
+  whatsappNumber: import.meta.env.VITE_WHATSAPP_NUMBER || "918875106106",
+  phone: import.meta.env.VITE_PHONE || "+91 88751 06106",
   email: import.meta.env.VITE_EMAIL || "connect@aapnoaavas.com",
   ga4: import.meta.env.VITE_GA4_ID || "",
   turnstileSiteKey: import.meta.env.VITE_TURNSTILE_SITEKEY || "",
@@ -11,9 +11,26 @@ export const SITE = {
   consentPolicyVersion: "2026-07-01",
 };
 
-/** Build a WhatsApp deep link with a prefilled message. */
-export function waLink(message: string): string {
-  return `https://wa.me/${SITE.whatsappNumber}?text=${encodeURIComponent(message)}`;
+/**
+ * Defaults for the admin-editable contact settings (GET /api/v1/settings). The live values are
+ * merged over these by useSettings(), so the site renders correctly even before anything is saved.
+ */
+export const SETTINGS_DEFAULTS = {
+  whatsapp_number: SITE.whatsappNumber,
+  phone: SITE.phone,
+  email: SITE.email,
+  address: "Jaipur, Rajasthan",
+  hours: "Mon–Sat, 9:30 am – 7:30 pm IST",
+  map_query: "Jaipur",
+  contact_heading: "A real person, on the other end.",
+  contact_intro:
+    "Tell us your budget, preferred locality and timeline. An advisor will get back to you with a shortlist worth your time — no call-centre run-around.",
+};
+export type SettingsKey = keyof typeof SETTINGS_DEFAULTS;
+
+/** Build a WhatsApp deep link with a prefilled message. Pass a number to override the default. */
+export function waLink(message: string, number: string = SITE.whatsappNumber): string {
+  return `https://wa.me/${number}?text=${encodeURIComponent(message)}`;
 }
 
 /** Format an Indian price range from rupee amounts (₹45 L – ₹1.2 Cr / On Request). */

@@ -30,6 +30,7 @@ func main() {
 		&models.Lead{},
 		&models.Banner{},
 		&models.Page{},
+		&models.Setting{},
 		&models.AdminUser{},
 	); err != nil {
 		log.Fatalf("AutoMigrate failed: %v", err)

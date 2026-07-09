@@ -28,6 +28,14 @@ type Page struct {
 	UpdatedAt       time.Time `json:"updated_at"`
 }
 
+// Setting is one editable site-wide value (contact details, WhatsApp number, contact-page copy),
+// managed in admin. Key/value so adding a field needs no migration.
+type Setting struct {
+	Key       string    `gorm:"primaryKey;size:60" json:"key"`
+	Value     string    `gorm:"type:text" json:"value"`
+	UpdatedAt time.Time `json:"updated_at"`
+}
+
 // AdminUser is a CMS operator. No public signup — seeded via env by the migration binary.
 type AdminUser struct {
 	ID           uint      `gorm:"primaryKey" json:"id"`

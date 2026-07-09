@@ -1,11 +1,12 @@
 import { Phone, EnvelopeSimple, MapPin } from "@phosphor-icons/react";
-import { SITE } from "@/lib/site";
 import { Seo } from "@/components/Seo";
 import { Reveal } from "@/components/motion/Reveal";
 import { LeadForm } from "@/components/LeadForm";
 import { WhatsAppButton, whatsappDefaultMessage } from "@/components/WhatsAppButton";
+import { useSettings } from "@/hooks/useSettings";
 
 export default function Contact() {
+  const s = useSettings();
   return (
     <>
       <Seo
@@ -21,10 +22,7 @@ export default function Contact() {
             <h1 className="text-surface text-[clamp(2.5rem,5.5vw,4.5rem)] font-bold max-w-3xl">
               Contact Aapno Aavas
             </h1>
-            <p className="mt-6 text-lg text-surface/80 max-w-2xl">
-              Tell us your budget, preferred locality and timeline. An advisor will get back to you
-              with a shortlist worth your time — no call-centre run-around.
-            </p>
+            <p className="mt-6 text-lg text-surface/80 max-w-2xl">{s.contact_intro}</p>
           </Reveal>
         </div>
       </section>
@@ -35,19 +33,17 @@ export default function Contact() {
           {/* Left: details */}
           <Reveal>
             <p className="eyebrow mb-3">Reach us</p>
-            <h2 className="text-[clamp(1.75rem,3vw,2.5rem)] max-w-md">
-              A real person, on the other end.
-            </h2>
+            <h2 className="text-[clamp(1.75rem,3vw,2.5rem)] max-w-md">{s.contact_heading}</h2>
 
             <div className="mt-10 space-y-8">
               <div className="flex items-start gap-4">
                 <Phone size={24} weight="light" className="text-saffron-ink mt-1 shrink-0" />
                 <div>
                   <p className="eyebrow mb-1 text-ink-muted">Phone</p>
-                  <a href={`tel:${SITE.phone.replace(/\s+/g, "")}`} className="text-lg text-navy font-medium hover:text-saffron-ink transition-colors">
-                    {SITE.phone}
+                  <a href={`tel:${s.phone.replace(/\s+/g, "")}`} className="text-lg text-navy font-medium hover:text-saffron-ink transition-colors">
+                    {s.phone}
                   </a>
-                  <p className="mt-1 text-sm text-ink-muted m-0">Mon–Sat, 9:30 am – 7:30 pm IST</p>
+                  <p className="mt-1 text-sm text-ink-muted m-0">{s.hours}</p>
                 </div>
               </div>
 
@@ -55,8 +51,8 @@ export default function Contact() {
                 <EnvelopeSimple size={24} weight="light" className="text-saffron-ink mt-1 shrink-0" />
                 <div>
                   <p className="eyebrow mb-1 text-ink-muted">Email</p>
-                  <a href={`mailto:${SITE.email}`} className="text-lg text-navy font-medium hover:text-saffron-ink transition-colors">
-                    {SITE.email}
+                  <a href={`mailto:${s.email}`} className="text-lg text-navy font-medium hover:text-saffron-ink transition-colors">
+                    {s.email}
                   </a>
                 </div>
               </div>
@@ -65,7 +61,7 @@ export default function Contact() {
                 <MapPin size={24} weight="light" className="text-saffron-ink mt-1 shrink-0" />
                 <div>
                   <p className="eyebrow mb-1 text-ink-muted">Office</p>
-                  <p className="text-lg text-ink m-0">Jaipur, Rajasthan</p>
+                  <p className="text-lg text-ink m-0">{s.address}</p>
                   <p className="mt-1 text-sm text-ink-muted m-0">Site visits arranged across the city</p>
                 </div>
               </div>
@@ -78,8 +74,8 @@ export default function Contact() {
             {/* Map */}
             <div className="mt-12 overflow-hidden rounded-sm hairline">
               <iframe
-                title="Aapno Aavas — Jaipur, Rajasthan"
-                src="https://www.google.com/maps?q=Jaipur&output=embed"
+                title={`Aapno Aavas — ${s.address}`}
+                src={`https://www.google.com/maps?q=${encodeURIComponent(s.map_query)}&output=embed`}
                 className="w-full h-72 border-0 block"
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"

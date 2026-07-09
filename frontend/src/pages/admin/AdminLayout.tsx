@@ -5,6 +5,7 @@ import {
   UserList,
   Image as ImageIcon,
   FileText,
+  Gear,
   SignOut,
 } from "@phosphor-icons/react";
 import { auth } from "@/lib/api";
@@ -16,6 +17,7 @@ const NAV_ITEMS = [
   { to: "/admin/leads", label: "Leads", icon: UserList, end: false },
   { to: "/admin/banners", label: "Banners", icon: ImageIcon, end: false },
   { to: "/admin/pages", label: "Pages", icon: FileText, end: false },
+  { to: "/admin/settings", label: "Settings", icon: Gear, end: false },
 ] as const;
 
 export default function AdminLayout() {

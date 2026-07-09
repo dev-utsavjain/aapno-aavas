@@ -2,8 +2,10 @@ import { Link } from "react-router-dom";
 import { MapPin, Phone, EnvelopeSimple } from "@phosphor-icons/react";
 import { NAV, SITE } from "@/lib/site";
 import { DISCLAIMERS } from "@/lib/site";
+import { useSettings } from "@/hooks/useSettings";
 
 export function Footer() {
+  const s = useSettings();
   return (
     <footer className="bg-navy-deep text-surface/80 mt-24">
       <div className="container-page py-16 grid gap-12 md:grid-cols-[1.5fr_1fr_1fr]">
@@ -42,15 +44,15 @@ export function Footer() {
           </h4>
           <ul className="space-y-3 text-sm">
             <li className="flex items-start gap-2.5">
-              <MapPin size={18} className="mt-0.5 text-saffron shrink-0" /> Jaipur, Rajasthan, India
+              <MapPin size={18} className="mt-0.5 text-saffron shrink-0" /> {s.address}
             </li>
             <li className="flex items-center gap-2.5">
               <Phone size={18} className="text-saffron shrink-0" />
-              <a href={`tel:${SITE.phone}`} className="hover:text-saffron">{SITE.phone}</a>
+              <a href={`tel:${s.phone.replace(/\s+/g, "")}`} className="hover:text-saffron">{s.phone}</a>
             </li>
             <li className="flex items-center gap-2.5">
               <EnvelopeSimple size={18} className="text-saffron shrink-0" />
-              <a href={`mailto:${SITE.email}`} className="hover:text-saffron">{SITE.email}</a>
+              <a href={`mailto:${s.email}`} className="hover:text-saffron">{s.email}</a>
             </li>
           </ul>
         </div>

@@ -1,6 +1,7 @@
 import { WhatsappLogo } from "@phosphor-icons/react";
 import { api } from "@/lib/api";
 import { SITE, waLink, CONSENT } from "@/lib/site";
+import { useSettings } from "@/hooks/useSettings";
 import { cn } from "@/lib/cn";
 
 /**
@@ -19,6 +20,7 @@ export function WhatsAppButton({
   className?: string;
   label?: string;
 }) {
+  const settings = useSettings();
   const onClick = async () => {
     // Best-effort lead log; never block the WhatsApp handoff on it.
     try {
@@ -35,7 +37,7 @@ export function WhatsAppButton({
     } catch {
       /* ignore */
     }
-    window.open(waLink(message), "_blank", "noopener");
+    window.open(waLink(message, settings.whatsapp_number), "_blank", "noopener");
   };
 
   return (

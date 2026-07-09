@@ -77,6 +77,7 @@ export const api = {
   listBanners: (placement?: string) =>
     request<Banner[]>("GET", `/banners${qs({ placement })}`),
   getPage: (slug: string) => request<Page>("GET", `/pages/${slug}`),
+  getSettings: () => request<Record<string, string>>("GET", "/settings"),
   createLead: (input: CreateLeadInput) => request<{ ok: boolean; id: number }>("POST", "/leads", input),
 
   // ---- Admin ----
@@ -107,6 +108,9 @@ export const api = {
     updateBanner: (id: number, b: Partial<Banner>) =>
       request<Banner>("PUT", `/admin/banners/${id}`, b),
     deleteBanner: (id: number) => request<void>("DELETE", `/admin/banners/${id}`),
+
+    updateSettings: (m: Record<string, string>) =>
+      request<Record<string, string>>("PUT", "/admin/settings", m),
 
     listPages: () => request<Page[]>("GET", "/admin/pages"),
     createPage: (p: Partial<Page>) => request<Page>("POST", "/admin/pages", p),

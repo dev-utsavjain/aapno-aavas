@@ -35,6 +35,7 @@ func RegisterRoutes(r *gin.Engine) {
 		apiV1.GET("/projects/:slug", v1.GetProject)
 		apiV1.GET("/banners", v1.ListBanners)
 		apiV1.GET("/pages/:slug", v1.GetPage)
+		apiV1.GET("/settings", v1.GetSettings)
 		apiV1.POST("/leads", middleware.StrictRateLimiter(), v1.CreateLead)
 
 		// Admin auth
@@ -63,6 +64,8 @@ func RegisterRoutes(r *gin.Engine) {
 			admin.POST("/pages", v1.AdminCreatePage)
 			admin.PUT("/pages/:id", v1.AdminUpdatePage)
 			admin.DELETE("/pages/:id", v1.AdminDeletePage)
+
+			admin.PUT("/settings", v1.AdminUpdateSettings)
 
 			admin.POST("/media/upload", v1.AdminUploadMedia)
 			admin.POST("/media", v1.AdminCreateMediaByURL)

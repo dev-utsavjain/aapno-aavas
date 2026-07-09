@@ -1,24 +1,12 @@
 import { useSearchParams } from "react-router-dom";
 import { useQuery, keepPreviousData } from "@tanstack/react-query";
-import { MagnifyingGlass } from "@phosphor-icons/react";
 import { api } from "@/lib/api";
 import type { ProjectFilters } from "@/lib/types";
 import { Seo } from "@/components/Seo";
 import { ProjectCard } from "@/components/ProjectCard";
 import { Reveal } from "@/components/motion/Reveal";
+import { HeroSearch } from "@/components/HeroSearch";
 import { cn } from "@/lib/cn";
-
-const TYPES = [
-  { v: "", l: "All" },
-  { v: "residential", l: "Residential" },
-  { v: "commercial", l: "Commercial" },
-];
-const STATUSES = [
-  { v: "", l: "Any status" },
-  { v: "upcoming", l: "Upcoming" },
-  { v: "ongoing", l: "Under Construction" },
-  { v: "ready", l: "Ready to Move" },
-];
 
 export default function Listings() {
   const [params, setParams] = useSearchParams();
@@ -28,6 +16,8 @@ export default function Listings() {
     type: (params.get("type") as ProjectFilters["type"]) || "",
     status: (params.get("status") as ProjectFilters["status"]) || "",
     city: params.get("city") || "",
+    price_min: Number(params.get("price_min")) || undefined,
+    price_max: Number(params.get("price_max")) || undefined,
     page: Number(params.get("page") || 1),
     limit: 12,
   };
@@ -50,8 +40,6 @@ export default function Listings() {
     setParams(next);
   };
 
-  const selectCls = "bg-surface border hairline rounded-sm px-4 py-2.5 text-sm text-ink outline-none focus:border-navy";
-
   return (
     <>
       <Seo title="Property Listings in Jaipur" description="Browse residential and commercial projects across Jaipur. Filter by locality, configuration, budget and status." />
@@ -67,27 +55,8 @@ export default function Listings() {
         </div>
       </section>
 
-      {/* filter bar */}
-      <div className="sticky top-20 z-30 bg-bg/95 backdrop-blur-sm border-b hairline">
-        <div className="container-page py-4 flex flex-wrap gap-3 items-center">
-          <div className="relative flex-1 min-w-[200px]">
-            <MagnifyingGlass size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-ink-muted" />
-            <input
-              defaultValue={filters.q}
-              onKeyDown={(e) => e.key === "Enter" && update("q", (e.target as HTMLInputElement).value)}
-              onBlur={(e) => update("q", e.target.value)}
-              placeholder="Search by name, locality, developer…"
-              className="w-full bg-surface border hairline rounded-sm pl-10 pr-4 py-2.5 text-sm outline-none focus:border-navy"
-            />
-          </div>
-          <select value={filters.type} onChange={(e) => update("type", e.target.value)} className={selectCls}>
-            {TYPES.map((t) => <option key={t.v} value={t.v}>{t.l}</option>)}
-          </select>
-          <select value={filters.status} onChange={(e) => update("status", e.target.value)} className={selectCls}>
-            {STATUSES.map((s) => <option key={s.v} value={s.v}>{s.l}</option>)}
-          </select>
-        </div>
-      </div>
+      {/* search + filters */}
+      <HeroSearch />
 
       {/* grid */}
       <section className="container-page py-16 min-h-[40vh]">

@@ -9,6 +9,7 @@ import Listings from "@/pages/Listings";
 import ProjectDetail from "@/pages/ProjectDetail";
 const About = lazy(() => import("@/pages/About"));
 const Contact = lazy(() => import("@/pages/Contact"));
+const EmiCalculator = lazy(() => import("@/pages/EmiCalculator"));
 const Privacy = lazy(() => import("@/pages/Privacy"));
 const Terms = lazy(() => import("@/pages/Terms"));
 const NotFound = lazy(() => import("@/pages/NotFound"));
@@ -22,6 +23,7 @@ const ProjectEditor = lazy(() => import("@/pages/admin/ProjectEditor"));
 const AdminLeads = lazy(() => import("@/pages/admin/Leads"));
 const AdminBanners = lazy(() => import("@/pages/admin/Banners"));
 const AdminPages = lazy(() => import("@/pages/admin/Pages"));
+const AdminSettings = lazy(() => import("@/pages/admin/Settings"));
 
 const Fallback = () => <div className="pt-40 text-center text-ink-muted">Loading…</div>;
 
@@ -36,6 +38,7 @@ export default function App() {
           <Route path="/projects/:slug" element={<ProjectDetail />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/tools/emi-calculator" element={<EmiCalculator />} />
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/terms" element={<Terms />} />
           <Route path="*" element={<NotFound />} />
@@ -58,6 +61,7 @@ export default function App() {
           <Route path="leads" element={<AdminLeads />} />
           <Route path="banners" element={<AdminBanners />} />
           <Route path="pages" element={<AdminPages />} />
+          <Route path="settings" element={<AdminSettings />} />
         </Route>
       </Routes>
     </Suspense>
