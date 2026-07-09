@@ -72,7 +72,7 @@ export function Hero() {
   }, [embla, onSelect]);
 
   return (
-    <section className="relative min-h-[92vh] bg-ink text-white overflow-hidden flex items-end md:items-center">
+    <section className="relative min-h-[78vh] bg-ink text-white overflow-hidden flex items-end md:items-center">
       {/* Background slideshow */}
       <div className="absolute inset-0" ref={emblaRef}>
         <div className="flex h-full">
@@ -94,7 +94,7 @@ export function Hero() {
       <GrainOverlay />
 
       {/* Foreground content */}
-      <div className="container-page relative z-10 w-full pb-40 pt-40 md:pb-44 md:py-28">
+      <div className="container-page relative z-10 w-full pb-36 pt-28 md:pb-40 md:pt-24">
         <div className="max-w-xl">
           <motion.p
             className="eyebrow !text-saffron mb-5"
