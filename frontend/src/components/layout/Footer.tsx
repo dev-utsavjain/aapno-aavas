@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { MapPin, Phone, EnvelopeSimple, Heart } from "@phosphor-icons/react";
+import { MapPin, Phone, EnvelopeSimple } from "@phosphor-icons/react";
 import { NAV, SITE } from "@/lib/site";
 import { DISCLAIMERS } from "@/lib/site";
 import { useSettings } from "@/hooks/useSettings";
@@ -74,7 +74,7 @@ export function Footer() {
           <span>© {new Date().getFullYear()} {SITE.name}. All rights reserved.</span>
           <span>RERA-registered projects · Verify status on the State RERA portal.</span>
           <span className="inline-flex items-center gap-1.5">
-            Designed with <Heart size={12} weight="fill" className="text-saffron" /> by
+            Designed with
             <a
               href="https://imagine.bo"
               target="_blank"
