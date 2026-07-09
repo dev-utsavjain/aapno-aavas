@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { MapPin, Phone, EnvelopeSimple } from "@phosphor-icons/react";
+import { MapPin, Phone, EnvelopeSimple, Heart } from "@phosphor-icons/react";
 import { NAV, SITE } from "@/lib/site";
 import { DISCLAIMERS } from "@/lib/site";
 import { useSettings } from "@/hooks/useSettings";
@@ -35,6 +35,9 @@ export function Footer() {
             <li>
               <Link to="/terms" className="hover:text-saffron transition-colors">Terms &amp; Conditions</Link>
             </li>
+            <li>
+              <Link to="/admin/login" className="hover:text-saffron transition-colors">Admin</Link>
+            </li>
           </ul>
         </div>
 
@@ -67,9 +70,20 @@ export function Footer() {
       </div>
 
       <div className="border-t border-white/10">
-        <div className="container-page py-5 text-xs text-surface/50 flex flex-col sm:flex-row justify-between gap-2">
+        <div className="container-page py-5 text-xs text-surface/50 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
           <span>© {new Date().getFullYear()} {SITE.name}. All rights reserved.</span>
           <span>RERA-registered projects · Verify status on the State RERA portal.</span>
+          <span className="inline-flex items-center gap-1.5">
+            Designed with <Heart size={12} weight="fill" className="text-saffron" /> by
+            <a
+              href="https://imagine.bo"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-surface/70 hover:text-saffron transition-colors"
+            >
+              Imagine.bo
+            </a>
+          </span>
         </div>
       </div>
     </footer>
