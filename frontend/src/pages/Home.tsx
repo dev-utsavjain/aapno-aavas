@@ -9,8 +9,11 @@ import { LeadForm } from "@/components/LeadForm";
 import { CountUp } from "@/components/cinematic/CountUp";
 import { VideoShowcase } from "@/components/cinematic/VideoShowcase";
 import { Hero } from "@/components/Hero";
+import { CategoryTiles } from "@/components/CategoryTiles";
 import { CategorySection } from "@/components/CategorySection";
+import { LocalityChips } from "@/components/LocalityChips";
 import { Testimonials } from "@/components/Testimonials";
+import { Faq } from "@/components/Faq";
 
 export default function Home() {
   const { data } = useQuery({
@@ -25,6 +28,9 @@ export default function Home() {
 
       {/* 1 · Hero — background image slideshow + search bar */}
       <Hero />
+
+      {/* Browse by type — quick category nav */}
+      <CategoryTiles />
 
       {/* 2 · Top Projects (featured-first) */}
       {projects.length > 0 && (
@@ -64,6 +70,9 @@ export default function Home() {
 
       {/* 6 · Lands */}
       <CategorySection category="land" title="Land parcels" eyebrow="Investment land" />
+
+      {/* Explore by locality */}
+      <LocalityChips />
 
       {/* 7 · About */}
       <section className="bg-ink text-white">
@@ -133,6 +142,9 @@ export default function Home() {
 
       {/* 9 · Testimonials */}
       <Testimonials />
+
+      {/* FAQ */}
+      <Faq />
 
       {/* 10 · Contact — CTA + lead form */}
       <section className="container-page py-24 md:py-32 grid gap-14 lg:grid-cols-[1.2fr_1fr] items-center">

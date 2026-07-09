@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
-import { MapPin } from "@phosphor-icons/react";
+import { MapPin, WhatsappLogo } from "@phosphor-icons/react";
 import type { Project } from "@/lib/types";
-import { formatPrice, STATUS_LABEL } from "@/lib/site";
+import { formatPrice, STATUS_LABEL, waLink } from "@/lib/site";
 import { ShareButton } from "@/components/ShareButton";
 
 /**
@@ -10,9 +10,15 @@ import { ShareButton } from "@/components/ShareButton";
  */
 export function ProjectCard({ project }: { project: Project }) {
   const cover = project.media?.[0]?.url;
+  // Surface a couple of tags (fallback to amenities) as chips — enriches the card without model changes.
+  const chips = ((project.tags?.length ? project.tags : project.amenities) ?? []).slice(0, 3);
+  const enquiry = waLink(
+    `Hi, I'm interested in ${project.title}${project.locality ? ` (${project.locality})` : ""}. Please share details.`,
+  );
+
   return (
     <div className="group relative block">
-      {/* Share sits outside the Link so it doesn't nest an interactive control inside an anchor. */}
+      {/* Share + enquire sit outside the Link so they don't nest interactive controls inside an anchor. */}
       <ShareButton slug={project.slug} title={project.title} className="absolute top-3 right-3 z-10" />
 
       <Link to={`/projects/${project.slug}`} className="block">
@@ -35,20 +41,44 @@ export function ProjectCard({ project }: { project: Project }) {
         </div>
 
         <div className="pt-3.5">
-        <p className="flex items-center gap-1.5 text-[0.7rem] font-semibold uppercase tracking-[0.16em] text-saffron-ink m-0">
-          <MapPin size={13} weight="fill" />
-          {[project.locality, project.city].filter(Boolean).join(", ")}
-        </p>
-        <h3 className="text-lg leading-tight mt-1.5 mb-0 transition-colors group-hover:text-saffron-ink">
-          {project.title}
-        </h3>
-        <div className="mt-2 flex items-center gap-2.5 text-sm text-ink-muted">
-          {project.bhk_config && <span className="uppercase tracking-wide text-xs font-medium">{project.bhk_config}</span>}
-          {project.bhk_config && <span className="text-sand">/</span>}
-          <span className="font-semibold text-ink">{formatPrice(project.price_min, project.price_max)}</span>
-        </div>
+          <p className="flex items-center gap-1.5 text-[0.7rem] font-semibold uppercase tracking-[0.16em] text-saffron-ink m-0">
+            <MapPin size={13} weight="fill" />
+            {[project.locality, project.city].filter(Boolean).join(", ")}
+          </p>
+          <h3 className="text-lg leading-tight mt-1.5 mb-0 transition-colors group-hover:text-saffron-ink">
+            {project.title}
+          </h3>
+          <div className="mt-2 flex items-center gap-2.5 text-sm text-ink-muted">
+            {project.bhk_config && <span className="uppercase tracking-wide text-xs font-medium">{project.bhk_config}</span>}
+            {project.bhk_config && <span className="text-sand">/</span>}
+            <span className="font-semibold text-ink">{formatPrice(project.price_min, project.price_max)}</span>
+          </div>
+          {chips.length > 0 && (
+            <div className="mt-2.5 flex flex-wrap gap-1.5">
+              {chips.map((c) => (
+                <span
+                  key={c}
+                  className="rounded-xs bg-panel px-2 py-0.5 text-[0.65rem] font-medium uppercase tracking-wide text-ink-muted"
+                >
+                  {c}
+                </span>
+              ))}
+            </div>
+          )}
         </div>
       </Link>
+
+      {/* Inline enquire — plain WhatsApp deep link (no lead logged here; the project page captures leads). */}
+      <a
+        href={enquiry}
+        target="_blank"
+        rel="noopener noreferrer"
+        onClick={(e) => e.stopPropagation()}
+        className="mt-3 inline-flex items-center gap-1.5 rounded-sm border hairline px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.08em] text-ink transition-colors hover:border-saffron hover:text-saffron-ink"
+      >
+        <WhatsappLogo size={15} weight="fill" className="text-saffron-ink" />
+        Enquire
+      </a>
     </div>
   );
 }

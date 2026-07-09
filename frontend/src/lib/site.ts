@@ -89,3 +89,47 @@ export const NAV = [
   { label: "About", to: "/about" },
   { label: "Contact", to: "/contact" },
 ];
+
+/** Popular Jaipur localities surfaced as quick-filter chips (link to /projects?q=<name>). */
+export const POPULAR_LOCALITIES = [
+  "Vaishali Nagar",
+  "Mansarovar",
+  "Jagatpura",
+  "C-Scheme",
+  "Tonk Road",
+  "Ajmer Road",
+  "Malviya Nagar",
+  "Jhotwara",
+  "Bapu Nagar",
+  "Vidhyadhar Nagar",
+  "Sanganer",
+  "Ring Road",
+];
+
+/** Buyer-advisory FAQ shown on the home page. Static for now (can move to the CMS later). */
+export const FAQ_ITEMS: { q: string; a: string }[] = [
+  {
+    q: "Do you charge buyers any fee?",
+    a: "No. Our advisory service is free for buyers — we help you shortlist, verify and negotiate at no cost to you. We work as a channel partner with the developers.",
+  },
+  {
+    q: "Are the projects RERA-registered and verified?",
+    a: "We surface each project's RERA registration number and a link to the official State RERA portal. We strongly recommend you verify the current status there before booking — the number is on every project page.",
+  },
+  {
+    q: "How will an advisor contact me after I enquire?",
+    a: "An advisor calls or messages you (phone / WhatsApp) about your enquiry. When you submit the form you consent to this contact, and it overrides DND/NDNC as required — your consent is logged with a timestamp for compliance.",
+  },
+  {
+    q: "Can you help with site visits and paperwork?",
+    a: "Yes. We accompany you on site visits across Jaipur, compare options honestly, and stay with you through negotiation, payment plan and registration with the developer.",
+  },
+  {
+    q: "Should I invest in a plot or a flat?",
+    a: "It depends on your goal. Plots and land tend to appreciate and offer flexibility but no rental yield or immediate use; flats give you a ready home or rental income. We'll walk you through the trade-offs for your budget and timeline.",
+  },
+  {
+    q: "Which areas of Jaipur do you cover?",
+    a: "Residential, commercial, plot and land options across Jaipur's growth corridors — Mansarovar, Vaishali Nagar, Jagatpura, Ajmer Road, Tonk Road, the Ring Road belt and more.",
+  },
+];
