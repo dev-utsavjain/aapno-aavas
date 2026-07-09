@@ -10,7 +10,6 @@ import { api } from "@/lib/api";
 import { SITE } from "@/lib/site";
 import { cn } from "@/lib/cn";
 import { GrainOverlay } from "@/components/cinematic/GrainOverlay";
-import { ScrollCue } from "@/components/cinematic/ScrollCue";
 import { MagneticButton } from "@/components/cinematic/MagneticButton";
 import { WhatsAppButton, whatsappDefaultMessage } from "@/components/WhatsAppButton";
 import { HeroSearch } from "@/components/HeroSearch";
@@ -52,7 +51,7 @@ export function Hero() {
 
   // Autoplay plugin kept in a ref so it isn't re-created on every render. Skipped when reduced.
   const autoplay = useRef(
-    Autoplay({ delay: 5500, stopOnInteraction: false, stopOnMouseEnter: true }),
+    Autoplay({ delay: 3500, stopOnInteraction: false, stopOnMouseEnter: true }),
   );
   const plugins = reduced ? [] : [autoplay.current];
   const [emblaRef, embla] = useEmblaCarousel({ loop: true, align: "start", duration: 32 }, plugins);
@@ -72,7 +71,7 @@ export function Hero() {
   }, [embla, onSelect]);
 
   return (
-    <section className="relative min-h-[78vh] bg-ink text-white overflow-hidden flex items-end md:items-center">
+    <section className="relative min-h-[72vh] md:min-h-[74vh] bg-ink text-white overflow-hidden flex flex-col">
       {/* Background slideshow */}
       <div className="absolute inset-0" ref={emblaRef}>
         <div className="flex h-full">
@@ -90,11 +89,16 @@ export function Hero() {
         </div>
       </div>
       {/* Scrim + grain sit above the slides but below the content */}
-      <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/60 to-ink/20 md:bg-gradient-to-r md:from-ink md:via-ink/55 md:to-ink/10" />
+      <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/60 to-ink/25 md:bg-gradient-to-r md:from-ink md:via-ink/55 md:to-ink/15" />
       <GrainOverlay />
 
-      {/* Foreground content */}
-      <div className="container-page relative z-10 w-full pb-36 pt-28 md:pb-40 md:pt-24">
+      {/* Foreground content — search filter on top (visible without scrolling), headline below */}
+      <div className="container-page relative z-10 w-full flex flex-col pt-8 pb-20 md:pt-10 md:pb-24">
+        {/* Search filter — top */}
+        <div className="mb-10 md:mb-14">
+          <HeroSearch variant="hero" />
+        </div>
+
         <div className="max-w-xl">
           <motion.p
             className="eyebrow !text-saffron mb-5"
@@ -140,7 +144,7 @@ export function Hero() {
 
       {/* Slide dots */}
       {slides.length > 1 && (
-        <div className="absolute bottom-32 left-1/2 -translate-x-1/2 z-10 flex gap-2 md:bottom-36">
+        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-10 flex gap-2">
           {slides.map((_, i) => (
             <button
               key={i}
@@ -155,15 +159,6 @@ export function Hero() {
           ))}
         </div>
       )}
-
-      {/* Search bar overlaid at the bottom of the hero */}
-      <div className="absolute inset-x-0 bottom-0 z-10">
-        <HeroSearch variant="hero" />
-      </div>
-
-      <div className="absolute bottom-2 left-1/2 -translate-x-1/2 z-10 hidden md:block">
-        <ScrollCue />
-      </div>
     </section>
   );
 }

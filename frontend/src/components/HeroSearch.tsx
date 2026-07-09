@@ -63,7 +63,7 @@ export function HeroSearch({ variant = "page" }: { variant?: "hero" | "page" }) 
     "w-full appearance-none bg-transparent pl-10 pr-4 py-3.5 text-sm text-ink outline-none cursor-pointer";
 
   const inner = (
-    <div className={cn("mx-auto max-w-4xl", variant === "page" && "")}>
+    <div className={cn(variant === "page" ? "mx-auto max-w-4xl" : "w-full")}>
       {/* Tabs */}
       <div className="flex flex-wrap gap-1.5 mb-3">
         {TABS.map((t) => (
@@ -125,7 +125,8 @@ export function HeroSearch({ variant = "page" }: { variant?: "hero" | "page" }) 
   );
 
   if (variant === "hero") {
-    return <div className="container-page pb-10 md:pb-12">{inner}</div>;
+    // Caller (Hero) handles container + spacing; render the search block full-width.
+    return inner;
   }
 
   return (
