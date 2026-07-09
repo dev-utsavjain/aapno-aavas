@@ -29,6 +29,7 @@ func main() {
 		&models.Media{},
 		&models.Lead{},
 		&models.Banner{},
+		&models.Testimonial{},
 		&models.Page{},
 		&models.Setting{},
 		&models.AdminUser{},
@@ -36,6 +37,11 @@ func main() {
 		log.Fatalf("AutoMigrate failed: %v", err)
 	}
 	log.Println("Schema migrated")
+
+	// Backfill Category on pre-existing projects (added after launch). Idempotent — only touches
+	// rows that don't yet have a category. Commercial maps 1:1; residential defaults to flat.
+	db.DB.Model(&models.Project{}).Where("category = '' AND type = 'commercial'").Update("category", "commercial")
+	db.DB.Model(&models.Project{}).Where("category = '' AND type = 'residential'").Update("category", "flat")
 
 	// Indexes AutoMigrate can't express: GIN for jsonb tag containment, composite for the
 	// listing filter+sort, and a case-insensitive search helper.

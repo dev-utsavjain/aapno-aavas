@@ -34,6 +34,7 @@ func RegisterRoutes(r *gin.Engine) {
 		apiV1.GET("/projects", v1.ListProjects)
 		apiV1.GET("/projects/:slug", v1.GetProject)
 		apiV1.GET("/banners", v1.ListBanners)
+		apiV1.GET("/testimonials", v1.ListTestimonials)
 		apiV1.GET("/pages/:slug", v1.GetPage)
 		apiV1.GET("/settings", v1.GetSettings)
 		apiV1.POST("/leads", middleware.StrictRateLimiter(), v1.CreateLead)
@@ -59,6 +60,11 @@ func RegisterRoutes(r *gin.Engine) {
 			admin.POST("/banners", v1.AdminCreateBanner)
 			admin.PUT("/banners/:id", v1.AdminUpdateBanner)
 			admin.DELETE("/banners/:id", v1.AdminDeleteBanner)
+
+			admin.GET("/testimonials", v1.AdminListTestimonials)
+			admin.POST("/testimonials", v1.AdminCreateTestimonial)
+			admin.PUT("/testimonials/:id", v1.AdminUpdateTestimonial)
+			admin.DELETE("/testimonials/:id", v1.AdminDeleteTestimonial)
 
 			admin.GET("/pages", v1.AdminListPages)
 			admin.POST("/pages", v1.AdminCreatePage)

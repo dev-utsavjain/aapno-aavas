@@ -10,8 +10,9 @@ type Project struct {
 	DeveloperName    string     `gorm:"size:200" json:"developer_name"`
 	City             string     `gorm:"size:100;index" json:"city"`
 	Locality         string     `gorm:"size:150" json:"locality"`
-	Type             string     `gorm:"size:20;index" json:"type"`   // residential | commercial
-	BHKConfig        string     `gorm:"size:100" json:"bhk_config"`  // e.g. "2, 3 & 4 BHK"
+	Type             string     `gorm:"size:20;index" json:"type"`     // residential | commercial
+	Category         string     `gorm:"size:20;index" json:"category"` // flat | plot | commercial | land
+	BHKConfig        string     `gorm:"size:100" json:"bhk_config"`    // e.g. "2, 3 & 4 BHK" (blank for plot/land)
 	PriceMin         int64      `json:"price_min"`                   // rupees; 0 = "on request"
 	PriceMax         int64      `json:"price_max"`
 	Status           string     `gorm:"size:20;index" json:"status"` // upcoming | ongoing | ready

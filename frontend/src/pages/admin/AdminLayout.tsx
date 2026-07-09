@@ -4,6 +4,7 @@ import {
   Buildings,
   UserList,
   Image as ImageIcon,
+  ChatCircleText,
   FileText,
   Gear,
   SignOut,
@@ -16,6 +17,7 @@ const NAV_ITEMS = [
   { to: "/admin/projects", label: "Projects", icon: Buildings, end: false },
   { to: "/admin/leads", label: "Leads", icon: UserList, end: false },
   { to: "/admin/banners", label: "Banners", icon: ImageIcon, end: false },
+  { to: "/admin/testimonials", label: "Testimonials", icon: ChatCircleText, end: false },
   { to: "/admin/pages", label: "Pages", icon: FileText, end: false },
   { to: "/admin/settings", label: "Settings", icon: Gear, end: false },
 ] as const;

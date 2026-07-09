@@ -22,6 +22,7 @@ const AdminProjects = lazy(() => import("@/pages/admin/Projects"));
 const ProjectEditor = lazy(() => import("@/pages/admin/ProjectEditor"));
 const AdminLeads = lazy(() => import("@/pages/admin/Leads"));
 const AdminBanners = lazy(() => import("@/pages/admin/Banners"));
+const AdminTestimonials = lazy(() => import("@/pages/admin/Testimonials"));
 const AdminPages = lazy(() => import("@/pages/admin/Pages"));
 const AdminSettings = lazy(() => import("@/pages/admin/Settings"));
 
@@ -60,6 +61,7 @@ export default function App() {
           <Route path="projects/:id" element={<ProjectEditor />} />
           <Route path="leads" element={<AdminLeads />} />
           <Route path="banners" element={<AdminBanners />} />
+          <Route path="testimonials" element={<AdminTestimonials />} />
           <Route path="pages" element={<AdminPages />} />
           <Route path="settings" element={<AdminSettings />} />
         </Route>

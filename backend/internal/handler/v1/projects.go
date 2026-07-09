@@ -19,6 +19,9 @@ func applyProjectFilters(q *gorm.DB, c *gin.Context) *gorm.DB {
 	if t := c.Query("type"); t != "" {
 		q = q.Where("type = ?", t)
 	}
+	if cat := c.Query("category"); cat != "" {
+		q = q.Where("category = ?", cat)
+	}
 	if bhk := c.Query("bhk"); bhk != "" {
 		q = q.Where("bhk_config ILIKE ?", "%"+bhk+"%")
 	}

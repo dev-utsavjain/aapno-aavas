@@ -16,6 +16,20 @@ type Banner struct {
 	UpdatedAt time.Time `json:"updated_at"`
 }
 
+// Testimonial is a customer quote shown on the home page, managed in admin.
+type Testimonial struct {
+	ID        uint      `gorm:"primaryKey" json:"id"`
+	Name      string    `gorm:"size:150;not null" json:"name"`
+	Quote     string    `gorm:"type:text;not null" json:"quote"`
+	Location  string    `gorm:"size:150" json:"location"`
+	PhotoURL  string    `gorm:"size:500" json:"photo_url"`
+	Rating    int       `gorm:"default:5" json:"rating"` // 1..5 stars
+	SortOrder int       `gorm:"default:0" json:"sort_order"`
+	Active    bool      `gorm:"default:true;index" json:"active"`
+	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"`
+}
+
 // Page is an editable informational page (About, Privacy, Terms, ...). Body is sanitized HTML.
 type Page struct {
 	ID              uint      `gorm:"primaryKey" json:"id"`

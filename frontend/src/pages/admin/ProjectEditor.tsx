@@ -3,7 +3,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ArrowLeft, Trash, UploadSimple, LinkSimple } from "@phosphor-icons/react";
 import { api, ApiError } from "@/lib/api";
-import type { Media, Project, ProjectStatus, ProjectType } from "@/lib/types";
+import type { Media, Project, ProjectCategory, ProjectStatus, ProjectType } from "@/lib/types";
 
 const INPUT =
   "w-full bg-bg border hairline rounded-sm px-3 py-2 outline-none focus:border-navy";
@@ -15,6 +15,7 @@ interface FormState {
   city: string;
   locality: string;
   type: ProjectType;
+  category: ProjectCategory;
   bhk_config: string;
   price_min: string;
   price_max: string;
@@ -39,6 +40,7 @@ const BLANK: FormState = {
   city: "Jaipur",
   locality: "",
   type: "residential",
+  category: "flat",
   bhk_config: "",
   price_min: "",
   price_max: "",
@@ -64,6 +66,7 @@ function fromProject(p: Project): FormState {
     city: p.city ?? "",
     locality: p.locality ?? "",
     type: p.type,
+    category: p.category ?? "flat",
     bhk_config: p.bhk_config ?? "",
     price_min: p.price_min ? String(p.price_min) : "",
     price_max: p.price_max ? String(p.price_max) : "",
@@ -97,6 +100,7 @@ function toPayload(f: FormState): Partial<Project> {
     city: f.city.trim(),
     locality: f.locality.trim(),
     type: f.type,
+    category: f.category,
     bhk_config: f.bhk_config.trim(),
     price_min: f.price_min ? Number(f.price_min) : 0,
     price_max: f.price_max ? Number(f.price_max) : 0,
@@ -258,6 +262,19 @@ export default function ProjectEditor() {
               </select>
             </label>
             <label className="block">
+              <span className="text-sm text-ink-muted">Category (drives home sections & search)</span>
+              <select
+                className={INPUT}
+                value={form.category}
+                onChange={(e) => set("category", e.target.value as ProjectCategory)}
+              >
+                <option value="flat">Flat / Apartment</option>
+                <option value="plot">Plot</option>
+                <option value="commercial">Commercial</option>
+                <option value="land">Land</option>
+              </select>
+            </label>
+            <label className="block">
               <span className="text-sm text-ink-muted">Status</span>
               <select
                 className={INPUT}
@@ -270,12 +287,20 @@ export default function ProjectEditor() {
               </select>
             </label>
             <label className="block">
-              <span className="text-sm text-ink-muted">BHK / unit configuration</span>
+              <span className="text-sm text-ink-muted">
+                {form.category === "plot" || form.category === "land"
+                  ? "Plot / land size (e.g. 200–500 sq yd)"
+                  : "BHK / unit configuration"}
+              </span>
               <input
                 className={INPUT}
                 value={form.bhk_config}
                 onChange={(e) => set("bhk_config", e.target.value)}
-                placeholder="2, 3 & 4 BHK"
+                placeholder={
+                  form.category === "plot" || form.category === "land"
+                    ? "e.g. 160, 200 & 300 sq yd"
+                    : "2, 3 & 4 BHK"
+                }
               />
             </label>
           </div>

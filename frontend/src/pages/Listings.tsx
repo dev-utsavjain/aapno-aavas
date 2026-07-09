@@ -14,6 +14,7 @@ export default function Listings() {
   const filters: ProjectFilters = {
     q: params.get("q") || "",
     type: (params.get("type") as ProjectFilters["type"]) || "",
+    category: (params.get("category") as ProjectFilters["category"]) || "",
     status: (params.get("status") as ProjectFilters["status"]) || "",
     city: params.get("city") || "",
     price_min: Number(params.get("price_min")) || undefined,

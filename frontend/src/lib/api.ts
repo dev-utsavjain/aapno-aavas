@@ -5,6 +5,7 @@ import type {
   Page,
   Project,
   ProjectFilters,
+  Testimonial,
 } from "./types";
 
 const BASE = "/api/v1";
@@ -76,6 +77,7 @@ export const api = {
   getProject: (slug: string) => request<Project>("GET", `/projects/${slug}`),
   listBanners: (placement?: string) =>
     request<Banner[]>("GET", `/banners${qs({ placement })}`),
+  listTestimonials: () => request<Testimonial[]>("GET", "/testimonials"),
   getPage: (slug: string) => request<Page>("GET", `/pages/${slug}`),
   getSettings: () => request<Record<string, string>>("GET", "/settings"),
   createLead: (input: CreateLeadInput) => request<{ ok: boolean; id: number }>("POST", "/leads", input),
@@ -108,6 +110,13 @@ export const api = {
     updateBanner: (id: number, b: Partial<Banner>) =>
       request<Banner>("PUT", `/admin/banners/${id}`, b),
     deleteBanner: (id: number) => request<void>("DELETE", `/admin/banners/${id}`),
+
+    listTestimonials: () => request<Testimonial[]>("GET", "/admin/testimonials"),
+    createTestimonial: (t: Partial<Testimonial>) =>
+      request<Testimonial>("POST", "/admin/testimonials", t),
+    updateTestimonial: (id: number, t: Partial<Testimonial>) =>
+      request<Testimonial>("PUT", `/admin/testimonials/${id}`, t),
+    deleteTestimonial: (id: number) => request<void>("DELETE", `/admin/testimonials/${id}`),
 
     updateSettings: (m: Record<string, string>) =>
       request<Record<string, string>>("PUT", "/admin/settings", m),

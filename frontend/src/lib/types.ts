@@ -1,6 +1,7 @@
 // Mirrors the Go API JSON (backend/internal/models). Keep in sync.
 
 export type ProjectType = "residential" | "commercial";
+export type ProjectCategory = "flat" | "plot" | "commercial" | "land";
 export type ProjectStatus = "upcoming" | "ongoing" | "ready";
 export type MediaKind = "image" | "video";
 export type LeadStatus = "new" | "contacted" | "qualified" | "closed" | "lost";
@@ -23,6 +24,7 @@ export interface Project {
   city: string;
   locality: string;
   type: ProjectType;
+  category: ProjectCategory;
   bhk_config: string;
   price_min: number;
   price_max: number;
@@ -83,6 +85,19 @@ export interface Page {
   meta_description: string;
 }
 
+export interface Testimonial {
+  id: number;
+  name: string;
+  quote: string;
+  location: string;
+  photo_url: string;
+  rating: number;
+  sort_order: number;
+  active: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
 export interface ListResponse<T> {
   data: T[];
   total: number;
@@ -106,6 +121,7 @@ export interface CreateLeadInput {
 export interface ProjectFilters {
   city?: string;
   type?: ProjectType | "";
+  category?: ProjectCategory | "";
   bhk?: string;
   status?: ProjectStatus | "";
   tag?: string;
