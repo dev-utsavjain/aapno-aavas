@@ -2,8 +2,9 @@
 node_modules/
 # builds
 backend/bin/
-backend/internal/dist/assets/
 frontend/dist/
+# NOTE: backend/internal/dist is intentionally TRACKED — the Go server embeds it via
+# //go:embed all:dist, so it MUST exist at build time. Do NOT ignore it.
 # env / secrets
 .env
 .env.*

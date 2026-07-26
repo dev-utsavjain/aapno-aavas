@@ -6,4 +6,4 @@ echo "Running migrations..."
 ./bin/migration
 
 echo "Starting server..."
-./bin/imagine_backend
+exec ./bin/imagine_backend

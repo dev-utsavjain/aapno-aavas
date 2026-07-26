@@ -1,43 +1,41 @@
-# syntax=docker/dockerfile:1
+# Build stage
+FROM golang:1.25.4-alpine AS builder
 
-# ---- Stage 1: build the React frontend into the Go embed dir ----
-FROM node:20-alpine AS web
-WORKDIR /web
-# frontend lives one level up from backend in the repo; Railway build context is the repo root.
-COPY frontend/package.json frontend/package-lock.json* ./
-RUN npm ci
-COPY frontend/ ./
-# vite.config builds into ../backend/internal/dist — but here backend isn't present, so build
-# locally then copy. Output dir is set via env for the Docker context.
-RUN npm run build
-
-# ---- Stage 2: build Go binaries with the real frontend embedded ----
-FROM golang:1.26-alpine AS builder
 WORKDIR /app
+
+# Install build dependencies
 RUN apk add --no-cache git
 
-COPY backend/go.mod backend/go.sum ./
+# Copy dependency files
+COPY go.mod go.sum ./
 RUN go mod download
 
-COPY backend/ ./
-# Replace the placeholder dist with the actual Vite build so //go:embed all:dist captures it.
-RUN rm -rf internal/dist && mkdir -p internal/dist
-COPY --from=web /web/dist/ ./internal/dist/
-# Fail the build if the embed dir is still empty / a stub.
-RUN test -f internal/dist/index.html && test -d internal/dist/assets \
-    || (echo "ERROR: frontend build not embedded (internal/dist missing index.html/assets)" && exit 1)
+# Copy source code (build context is backend/ — frontend is embedded via committed internal/dist)
+COPY . .
 
-RUN CGO_ENABLED=0 GOOS=linux go build -o bin/migration ./cmd/migration
-RUN CGO_ENABLED=0 GOOS=linux go build -o bin/imagine_backend ./cmd/server
+# Build migration binary
+RUN CGO_ENABLED=0 GOOS=linux go build -o bin/migration cmd/migration/main.go
 
-# ---- Stage 3: runtime ----
+# Build server binary
+RUN CGO_ENABLED=0 GOOS=linux go build -o bin/imagine_backend cmd/server/main.go
+
+# Final stage
 FROM alpine:latest
+
 RUN apk add --no-cache ca-certificates tzdata
+
 WORKDIR /app
+
+# Copy binaries from builder
 COPY --from=builder /app/bin/migration ./bin/
 COPY --from=builder /app/bin/imagine_backend ./bin/
 COPY --from=builder /app/start.sh ./
-# Normalize line endings (Windows checkouts can introduce CRLF, which breaks #!/bin/sh) + exec bit.
-RUN sed -i 's/\r$//' ./start.sh && chmod +x ./start.sh
+
+# Normalize line endings (guard against CRLF from Windows checkouts) + make executable
+RUN tr -d '\r' < start.sh > start.sh.tmp && mv start.sh.tmp start.sh && chmod +x ./start.sh
+
+# Export port
 EXPOSE 8080
+
+# Command to run
 CMD ["./start.sh"]
