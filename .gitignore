@@ -11,7 +11,7 @@ frontend/dist/
 # editor / os
 .DS_Store
 *.log
-# large seed videos (kept locally, not in git)
-assets-seed/videos/
+# seed source media (kept locally, not in git) — prepped outputs live in frontend/public
+assets-seed/
 # confidential handover doc (contains secrets) — keep out of git
 docs/HANDOVER.md

@@ -8,7 +8,9 @@ import type {
   Testimonial,
 } from "./types";
 
-const BASE = "/api/v1";
+// Plain string literal — the platform rewrites this to "<backendURL>/api" on deploy.
+// Do NOT use import.meta.env / ?? / || / template literals here. Request paths carry /v1.
+const BASE = "/api";
 const TOKEN_KEY = "aa_token";
 
 export const auth = {
@@ -42,7 +44,7 @@ async function request<T>(
   if (auth.token) headers.Authorization = `Bearer ${auth.token}`;
   if (body && !isForm) headers["Content-Type"] = "application/json";
 
-  const res = await fetch(BASE + path, {
+  const res = await fetch(`${BASE}/v1${path}`, {
     method,
     headers,
     body: isForm ? (body as FormData) : body ? JSON.stringify(body) : undefined,
@@ -103,7 +105,7 @@ export const api = {
       request<ListResponse<import("./types").Lead>>("GET", `/admin/leads${qs(filters)}`),
     updateLead: (id: number, patch: { status?: string; notes?: string }) =>
       request<import("./types").Lead>("PATCH", `/admin/leads/${id}`, patch),
-    exportLeadsURL: () => `${BASE}/admin/leads/export.csv`,
+    exportLeadsURL: () => `${BASE}/v1/admin/leads/export.csv`,
 
     listBanners: () => request<Banner[]>("GET", "/admin/banners"),
     createBanner: (b: Partial<Banner>) => request<Banner>("POST", "/admin/banners", b),

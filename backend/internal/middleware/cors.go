@@ -1,29 +1,19 @@
 package middleware
 
 import (
-	"imagine_backend/config"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
 
-// CORSMiddleware echoes back only origins present in ALLOWED_ORIGINS. In production the SPA
-// is served same-origin from this service, so CORS is largely a no-op; the allowlist exists
-// for local dev (Vite on :5173) and any future split-origin deploy. No wildcard.
+// CORSMiddleware allows all origins. The imagine preview and the Railway backend are on
+// different hosts, so every browser call is cross-origin. Auth is Bearer-token (not
+// cookies), so wildcard is correct and safe — never pair `*` with Allow-Credentials.
 func CORSMiddleware() gin.HandlerFunc {
-	allowed := make(map[string]bool, len(config.AppConfig.AllowedOrigins))
-	for _, o := range config.AppConfig.AllowedOrigins {
-		allowed[o] = true
-	}
-
 	return func(c *gin.Context) {
-		origin := c.GetHeader("Origin")
-		if origin != "" && allowed[origin] {
-			c.Writer.Header().Set("Access-Control-Allow-Origin", origin)
-			c.Writer.Header().Set("Vary", "Origin")
-			c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization, X-Requested-With")
-			c.Writer.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, PATCH, DELETE, OPTIONS")
-		}
+		c.Header("Access-Control-Allow-Origin", "*")
+		c.Header("Access-Control-Allow-Methods", "GET, POST, PUT, PATCH, DELETE, OPTIONS")
+		c.Header("Access-Control-Allow-Headers", "Origin, Content-Type, Authorization")
 
 		if c.Request.Method == http.MethodOptions {
 			c.AbortWithStatus(http.StatusNoContent)

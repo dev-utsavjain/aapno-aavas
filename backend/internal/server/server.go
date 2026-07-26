@@ -8,6 +8,7 @@ import (
 	"imagine_backend/internal/db"
 	"imagine_backend/internal/handler/web"
 	"imagine_backend/internal/middleware"
+	"imagine_backend/internal/services"
 	"io"
 	"io/fs"
 	"log"
@@ -25,6 +26,16 @@ import (
 func StartServer() {
 	config.LoadConfig()
 	db.ConnectToDB()
+
+	// The platform runs ONLY this binary on deploy — cmd/migration is NOT run. Migrate at
+	// boot (schema create + AutoMigrate) or the first table access crash-loops → 502.
+	if err := db.Migrate(); err != nil {
+		log.Fatalf("migrate: %v", err)
+	}
+	// Idempotent admin bootstrap, AFTER migrate.
+	if err := services.Seed(); err != nil {
+		log.Fatalf("seed: %v", err)
+	}
 
 	// Load the embedded index.html once so the web package can inject per-route meta into it.
 	web.Init(readEmbeddedIndex())
