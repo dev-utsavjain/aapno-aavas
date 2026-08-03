@@ -15,10 +15,11 @@ var DB *gorm.DB
 func ConnectToDB() {
 	c := config.AppConfig
 
-	// sslmode is env-driven (`require` for Supabase, `disable` for local). search_path is
-	// only appended when a schema is configured. For Supabase, connect through the SESSION
-	// pooler host (aws-0-<region>.pooler.supabase.com:5432, user postgres.<ref>) — the direct
-	// host is IPv6-only and Railway cannot route it.
+	// sslmode is env-driven (default `prefer`: TLS when offered, plaintext fallback — a
+	// non-TLS Postgres hard-fails `require`). search_path is only appended when a schema is
+	// configured. For Supabase Cloud, connect through the SESSION pooler host
+	// (aws-0-<region>.pooler.supabase.com:5432, user postgres.<ref>) — the direct host is
+	// IPv6-only and Railway cannot route it.
 	dsn := fmt.Sprintf(
 		"host=%s user=%s password=%s dbname=%s port=%s sslmode=%s TimeZone=Asia/Kolkata",
 		c.DBHost, c.DBUser, c.DBPassword, c.DBName, c.DBPort, c.DBSslMode,

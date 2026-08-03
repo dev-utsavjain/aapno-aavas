@@ -4,8 +4,6 @@ assets-seed/videos
 assets-seed/photos
 backend/bin
 frontend/dist
-backend/internal/dist/assets
-backend/internal/dist/img
-backend/internal/dist/gallery
-backend/internal/dist/fonts
+# NOTE: backend/internal/dist must reach the build context — the Go binary embeds it via
+# //go:embed all:dist. Excluding anything under it = blank site with a working /api.
 **/.env

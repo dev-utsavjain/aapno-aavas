@@ -1,0 +1,13 @@
+# Secrets / local config — NEVER baked into the image.
+.env
+.env.*
+!.env.example
+
+# Local build outputs — binaries are rebuilt inside the Docker build.
+bin/
+
+# VCS / editor noise
+.git
+
+# NOTE: internal/dist MUST stay in the build context — //go:embed all:dist reads it at
+# compile time. Excluding it (or anything under it) ships a blank site.

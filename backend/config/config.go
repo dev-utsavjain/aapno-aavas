@@ -69,8 +69,11 @@ func LoadConfig() {
 		DBHost:     os.Getenv("DB_HOST"),
 		DBPort:     envOr("DB_PORT", "5432"),
 		DBSchema:   os.Getenv("DB_SCHEMA"),
-		// Supabase enforces SSL; only local dev uses `disable`.
-		DBSslMode: envOr("DB_SSLMODE", "require"),
+		// `prefer` tries TLS, then falls back to plaintext if the server refuses it — works
+		// against both TLS-enforcing Postgres and non-TLS ones (e.g. self-hosted Supabase on
+		// Railway, which hard-fails `require` with "server refused TLS connection"). Pin
+		// DB_SSLMODE=require/disable when the target is known.
+		DBSslMode: envOr("DB_SSLMODE", "prefer"),
 
 		JWTSecret: os.Getenv("JWT_SECRET"),
 

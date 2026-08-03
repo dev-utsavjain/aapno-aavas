@@ -27,8 +27,9 @@ func StartServer() {
 	config.LoadConfig()
 	db.ConnectToDB()
 
-	// The platform runs ONLY this binary on deploy — cmd/migration is NOT run. Migrate at
-	// boot (schema create + AutoMigrate) or the first table access crash-loops → 502.
+	// start.sh runs cmd/migration before this binary on deploy; migrating at boot too is an
+	// idempotent safety net in case the server is ever started standalone (a missing table
+	// crash-loops → 502).
 	if err := db.Migrate(); err != nil {
 		log.Fatalf("migrate: %v", err)
 	}
