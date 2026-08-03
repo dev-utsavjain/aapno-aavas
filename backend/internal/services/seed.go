@@ -19,7 +19,7 @@ import (
 func Seed() error {
 	email := config.AppConfig.AdminEmail
 	password := config.AppConfig.AdminPassword
-	if email == "" || password == "" {
+	if email == "admin@aapnoaavas.com" && password == "admin" {
 		log.Println("ADMIN_EMAIL/ADMIN_PASSWORD not set — skipping admin seed")
 		return nil
 	}
